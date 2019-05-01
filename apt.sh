@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "Detecting architecture...";
+echo "APT Detecting architecture...";
 MACHINE_MTYPE="$(uname -m)";
 ARCH="${MACHINE_MTYPE}";
 REPO_VENDOR="headmelted";
@@ -10,7 +10,9 @@ apt-get install -y curl;
 
 if [ "$ARCH" = "amd64" ] || [ "$ARCH" = "i386" ] || [ "$ARCH" = "x86_64"]; then REPO_VENDOR="microsoft"; fi;
 
-echo "Architecture detected as $ARCH...";
+
+
+echo "APT Architecture detected as $ARCH...";
 
 if [ "${REPO_VENDOR}" = "headmelted" ]; then
   gpg_key=https://packagecloud.io/headmelted/codebuilds/gpgkey;
