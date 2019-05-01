@@ -8,7 +8,7 @@ REPO_VENDOR="headmelted";
 echo "Ensuring curl is installed";
 apt-get install -y curl;
 
-if [ "$ARCH" = "amd64" ] || [ "$ARCH" = "i386" ]; then REPO_VENDOR="microsoft"; fi;
+if [ "$ARCH" = "amd64" ] || [ "$ARCH" = "i386" ] || [ "$ARCH" = "x86_64"]; then REPO_VENDOR="microsoft"; fi;
 
 echo "Architecture detected as $ARCH...";
 
@@ -21,7 +21,7 @@ else
   gpg_key=https://packages.microsoft.com/keys/microsoft.asc;
   repo_name="stable"
   repo_entry="deb https://packages.microsoft.com/repos/vscode ${repo_name} main";
-  code_executable_name="code-insiders";
+  code_executable_name="code";
 fi;
 
 echo "Retrieving GPG key [${REPO_VENDOR}] ($gpg_key)...";
@@ -35,6 +35,7 @@ echo "Installing [${REPO_VENDOR}] repository...";
 echo "${repo_entry}" > /etc/apt/sources.list.d/${REPO_VENDOR}_vscode.list;
   
 echo "Updating APT cache..."
+apt-get install apt-transport-https
 apt-get update -yq;
 echo "Done!"
 
