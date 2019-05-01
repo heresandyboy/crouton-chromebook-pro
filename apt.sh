@@ -5,7 +5,7 @@ echo "RUNNING APT.SH to install packages"
 echo "APT Detecting architecture...";
 MACHINE_MTYPE="$(uname -m)";
 ARCH="${MACHINE_MTYPE}";
-REPO_VENDOR="headmelted";
+REPO_VENDOR="microsoft";
 
 echo "Ensuring curl is installed";
 apt-get install -y curl;
