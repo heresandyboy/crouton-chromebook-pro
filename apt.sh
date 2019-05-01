@@ -10,49 +10,14 @@ REPO_VENDOR="microsoft";
 echo "Ensuring curl is installed";
 apt-get install -y curl;
 
-if [ "$ARCH" = "amd64" ] || [ "$ARCH" = "i386" ] || [ "$ARCH" = "x86_64"]; then REPO_VENDOR="microsoft"; fi;
+echo "Installing Visual Studio Code...";
+curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+sudo install -o root -g root -m 644 microsoft.gpg /etc/apt/trusted.gpg.d/
+sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
 
-echo "APT REPO_VENDOR detected as $REPO_VENDOR...";
-
-echo "APT Architecture detected as $ARCH...";
-
-if [ "${REPO_VENDOR}" = "headmelted" ]; then
-  gpg_key=https://packagecloud.io/headmelted/codebuilds/gpgkey;
-  repo_name="stretch";
-  repo_entry="deb https://packagecloud.io/headmelted/codebuilds/debian/ ${repo_name} main";
-  code_executable_name="code-oss";
-else
-  gpg_key=https://packages.microsoft.com/keys/microsoft.asc;
-  repo_name="stable"
-  repo_entry="deb https://packages.microsoft.com/repos/vscode ${repo_name} main";
-  code_executable_name="code";
-fi;
-
-echo "Retrieving GPG key [${REPO_VENDOR}] ($gpg_key)...";
-curl $gpg_key | gpg --dearmor > /etc/apt/trusted.gpg.d/${REPO_VENDOR}_vscode.gpg;
-
-echo "Removing any previous entry to headmelted repository";
-rm -rf /etc/apt/sources.list.d/headmelted_codebuilds.list;
-rm -rf /etc/apt/sources.list.d/codebuilds.list;
-  
-echo "Installing [${REPO_VENDOR}] repository...";
-echo "${repo_entry}" > /etc/apt/sources.list.d/${REPO_VENDOR}_vscode.list;
-  
-echo "Updating APT cache..."
-apt-get install apt-transport-https
-apt-get update -yq;
-echo "Done!"
-
-if [ $? -eq 0 ]; then
-  echo "Repository install complete.";
-else
-  echo "Repository install failed.";
-  exit 1;
-fi;
-
-echo "Installing Visual Studio Code from [${repo_name}]...";
-apt-get install -t ${repo_name} -y ${code_executable_name};
-#apt-get install -t ${repo_name} -y --allow-unauthenticated ${code_executable_name};
+sudo apt-get install apt-transport-https
+sudo apt-get update
+sudo apt-get install code # or code-insiders
 
 if [ $? -eq 0 ]; then
   echo "Visual Studio Code install complete.";
