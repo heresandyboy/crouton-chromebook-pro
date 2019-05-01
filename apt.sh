@@ -1,5 +1,7 @@
 #!/bin/sh
 
+echo "RUNNING APT.SH to install packages"
+
 echo "APT Detecting architecture...";
 MACHINE_MTYPE="$(uname -m)";
 ARCH="${MACHINE_MTYPE}";
@@ -10,7 +12,7 @@ apt-get install -y curl;
 
 if [ "$ARCH" = "amd64" ] || [ "$ARCH" = "i386" ] || [ "$ARCH" = "x86_64"]; then REPO_VENDOR="microsoft"; fi;
 
-
+echo "APT REPO_VENDOR detected as $REPO_VENDOR...";
 
 echo "APT Architecture detected as $ARCH...";
 
